@@ -1,1 +1,39 @@
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Example: List of banned IPs
+const bannedIPs = ['192.168.1.100', '203.0.113.50' '24.77.90.227'];
+
+// Middleware to check if the user is banned
+app.use((req, res, next) => {
+    const userIP = req.ip;
+
+    if (bannedIPs.includes(userIP)) {
+        return res.status(403).send('You are banned from this website.');
+    }
+
+    next(); // User is not banned; continue to the next middleware or route
+});
+
+// Example home route
+app.get('/', (req, res) => {
+    res.send('Welcome to the site!');
+});
+
+// Example admin route to ban users dynamically
+app.get('/ban/:ip', (req, res) => {
+    const ipToBan = req.params.ip;
+
+    if (!bannedIPs.includes(ipToBan)) {
+        bannedIPs.push(ipToBan);
+        return res.send(`IP ${ipToBan} has been banned.`);
+    }
+
+    res.send(`IP ${ipToBan} is already banned.`);
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
 
