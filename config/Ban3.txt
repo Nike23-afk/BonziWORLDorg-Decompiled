@@ -1,28 +1,43 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const fs = require('fs');
+const WebSocket = require('ws');
+const server = new WebSocket.Server({ port: 8080 });
 
-// Hardcoded list of banned IPs
-const bannedIPs = ['24.77.90.227'];
+// Load banned IPs from a file
+let bannedIPs = [];
+if (fs.existsSync('bannedIPs.json')) {
+    bannedIPs = JSON.parse(fs.readFileSync('bannedIPs.json'));
+}
+
+// Function to save banned IPs to a file
+function saveBannedIPs() {
+    fs.writeFileSync('bannedIPs.json', JSON.stringify(bannedIPs));
+}
 
 // Middleware to check if the user's IP is banned
-app.use((req, res, next) => {
-    const userIP = req.ip; // Get the IP address of the user
+server.on('connection', (ws, req) => {
+    const userIP = req.socket.remoteAddress;
 
     if (bannedIPs.includes(userIP)) {
-        return res.status(403).send('You are banned from this website.');
+        ws.close(1008, 'You are banned from this server.');
+        return;
     }
 
-    next(); // User is not banned; proceed to the next middleware/route
+    // Handle the connection as usual
+    ws.on('message', (message) => {
+        // Process incoming messages
+    });
 });
 
-// Example home route
-app.get('/', (req, res) => {
-    res.send('Welcome to the site!');
-});
+// Function to ban an IP
+function banIP(ip) {
+    if (!bannedIPs.includes(ip)) {
+        bannedIPs.push(ip);
+        saveBannedIPs();
+        console.log(`IP ${ip} has been banned.`);
+    } else {
+        console.log(`IP ${ip} is already banned.`);
+    }
+}
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
+// Example usage: Ban a specific IP
+banIP('24.77.90.227');
