@@ -1,8 +1,8 @@
 {
 	"port": 2404,
-	"godword": "3c0a3efcb064c876c9cb0954ab7f0e479bfacd5be091de70b4330cc47900d279",
-	"kingwords": ["3c0a3efcb064c876c9cb0954ab7f0e479bfacd5be091de70b4330cc47900d279"],
-	"lowkingwords": ["3c0a3efcb064c876c9cb0954ab7f0e479bfacd5be091de70b4330cc47900d279"],
+	"godword": "39334df07853335274ac3b9524aa079fd4ac9464f656fbf39ee6d7b3bcf5b16e",
+	"kingwords": ["39334df07853335274ac3b9524aa079fd4ac9464f656fbf39ee6d7b3bcf5b16e"],
+	"lowkingwords": ["39334df07853335274ac3b9524aa079fd4ac9464f656fbf39ee6d7b3bcf5b16e"],
 	"defname": "Anonymous",
 	"maxname": 30,
 	"maxmessage": 1000,
